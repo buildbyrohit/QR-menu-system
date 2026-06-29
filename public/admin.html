@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | ZZRestaurant Restaurant Management</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <!-- QRCode.js CDN for Table QR Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- Admin Login Screen (displayed if unauthenticated) -->
+  <div id="admin-login-screen" class="login-container">
+    <div class="login-card glass-premium fade-in">
+      <h1 class="login-title">ZZRestaurant</h1>
+      <p class="login-subtitle">Restaurant Control Center</p>
+      
+      <div id="login-error" style="color:var(--danger); font-size:0.85rem; margin-bottom:16px; display:none; text-align:center; font-weight:600;"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="admin@restaurant.com" required value="admin@restaurant.com">
+        </div>
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required value="password123">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In to Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Main Dashboard Layout (displayed if authenticated) -->
+  <div id="admin-dashboard-layout" class="admin-layout" style="display: none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div>
+        <div class="sidebar-brand">ZZRestaurant ADMIN</div>
+        <nav class="sidebar-nav">
+          <a class="nav-item active" id="nav-orders">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>Live Orders</span>
+          </a>
+          <a class="nav-item" id="nav-menu">
+            <svg viewBox="0 0 24 24"><path d="M8.1 14.1l-2.5 2.5c-.3.3-.3.8 0 1.1l2.5 2.5c.3.3.8.3 1.1 0l2.5-2.5c.3-.3.3-.8 0-1.1l-2.5-2.5c-.3-.3-.8-.3-1.1 0zm7.8-8.2l-2.5 2.5c-.3.3-.3.8 0 1.1l2.5 2.5c.3.3.8.3 1.1 0l2.5-2.5c.3-.3.3-.8 0-1.1l-2.5-2.5c-.3-.3-.8-.3-1.1 0zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93s3.05-7.44 7-7.93v15.86z"/></svg>
+            <span>Menu Manager</span>
+          </a>
+          <a class="nav-item" id="nav-tables">
+            <svg viewBox="0 0 24 24"><path d="M4 15V9c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4v6c0 2.21-1.79 4-4 4H8c-2.21 0-4-1.79-4-4zm4-8c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8z"/></svg>
+            <span>Tables & QR</span>
+          </a>
+          <a class="nav-item" id="nav-settings">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Settings</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary" id="logout-btn" style="width: 100%;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+          </svg>
+          Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      
+      <!-- Section: Live Orders -->
+      <section id="section-orders" class="admin-section fade-in">
+        <div class="admin-header">
+          <h2 class="admin-page-title">Live Orders Dashboard</h2>
+          <span id="live-indicator" style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:var(--success); font-weight:600;">
+            <span style="width:8px; height:8px; background:var(--success); border-radius:50%; animation: pulse 1.5s infinite;"></span> Live Sync Enabled
+          </span>
+        </div>
+
+        <!-- Dashboard Stat Cards -->
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <div class="stat-info">
+              <span class="stat-label">Total Revenue</span>
+              <span class="stat-val" id="stat-revenue">₹0</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8z"/></svg>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-info">
+              <span class="stat-label">Active Orders</span>
+              <span class="stat-val" id="stat-active">0</span>
+            </div>
+            <div class="stat-icon-wrapper">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-info">
+              <span class="stat-label">Unpaid Cash Orders</span>
+              <span class="stat-val" id="stat-unpaid">0</span>
+            </div>
+            <div class="stat-icon-wrapper" style="color: var(--warning); background: rgba(255, 183, 3, 0.1);">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.25z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanban Board columns -->
+        <div class="orders-board-layout">
+          <!-- Column 1: Pending -->
+          <div class="board-col glass" id="col-pending">
+            <div class="col-header">
+              <span class="col-title">New Requests</span>
+              <span class="col-count" id="count-pending">0</span>
+            </div>
+            <div class="orders-list" id="list-pending">
+              <!-- Rendered via Firestore listener -->
+            </div>
+          </div>
+
+          <!-- Column 2: Preparing -->
+          <div class="board-col glass" id="col-preparing">
+            <div class="col-header">
+              <span class="col-title">In Cooking Prep</span>
+              <span class="col-count" id="count-preparing">0</span>
+            </div>
+            <div class="orders-list" id="list-preparing">
+              <!-- Rendered via Firestore listener -->
+            </div>
+          </div>
+
+          <!-- Column 3: Completed / Served -->
+          <div class="board-col glass" id="col-completed">
+            <div class="col-header">
+              <span class="col-title">Served & Closed</span>
+              <span class="col-count" id="count-completed">0</span>
+            </div>
+            <div class="orders-list" id="list-completed">
+              <!-- Rendered via Firestore listener -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Menu Manager -->
+      <section id="section-menu" class="admin-section fade-in" style="display: none;">
+        <div class="menu-crud-header">
+          <h2 class="admin-page-title">Menu Management</h2>
+          <button class="btn btn-primary" id="add-menu-item-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Add Menu Item
+          </button>
+        </div>
+
+        <!-- CRUD Menu Table -->
+        <div class="crud-table-wrapper">
+          <table class="crud-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Type</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="menu-crud-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section: Tables & QR Generator -->
+      <section id="section-tables" class="admin-section fade-in" style="display: none;">
+        <div class="admin-header">
+          <h2 class="admin-page-title">Restaurant Table & QR Codes</h2>
+        </div>
+
+        <div class="qr-gen-layout">
+          <!-- Left Column: Add Table and Tables list -->
+          <div class="tables-list-wrapper">
+            <h3 style="font-size: 1.15rem; margin-bottom: 20px; color: var(--accent-gold);">Add New Table</h3>
+            <form id="add-table-form" style="display: flex; gap: 12px; margin-bottom: 24px;">
+              <input type="text" id="new-table-name" class="form-control" placeholder="e.g. Table 5, Lounge A" required style="flex-grow:1;">
+              <button type="submit" class="btn btn-primary">Add Table</button>
+            </form>
+
+            <h3 style="font-size: 1.15rem; margin-bottom: 16px;">Active Tables</h3>
+            <div class="tables-grid" id="tables-list-el">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Right Column: QR Code Preview Panel -->
+          <div class="qr-preview-box glass-premium">
+            <div id="qr-display-content" style="display:none; text-align:center;">
+              <div class="qr-table-details">
+                <h3 class="qr-table-title" id="preview-table-title">Table 1</h3>
+                <p id="preview-table-uuid" style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">UUID: 8f4a2b9x</p>
+                <div class="qr-table-link" id="preview-table-url">Scanning URL link...</div>
+              </div>
+
+              <!-- Renders the QR Canvas -->
+              <div class="qr-code-canvas-container">
+                <div id="qrcode-canvas"></div>
+              </div>
+
+              <button class="btn btn-primary" id="download-qr-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download QR Code Image
+              </button>
+              <button class="btn btn-danger" id="delete-table-btn" style="width: 100%; margin-top: 12px; font-size: 0.9rem; padding: 10px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                Delete Table
+              </button>
+            </div>
+            
+            <div id="qr-placeholder-content" style="text-align:center; color:var(--text-muted);">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:16px;">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10M12 7v10"/>
+              </svg>
+              <p>Select an active table on the left to display and download its secure dining QR code.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Settings -->
+      <section id="section-settings" class="admin-section fade-in" style="display: none;">
+        <div class="admin-header">
+          <h2 class="admin-page-title">Restaurant Settings</h2>
+        </div>
+
+        <div class="glass-premium" style="padding: 30px; border-radius: var(--border-radius); max-width: 600px;">
+          <h3 style="font-size: 1.25rem; margin-bottom: 20px; color: var(--accent-gold);">General Configurations</h3>
+          
+          <form id="settings-form">
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label for="settings-default-lang" style="display: block; margin-bottom: 8px; font-weight: 500;">Default Menu Language</label>
+              <select id="settings-default-lang" class="form-control" style="width: 100%;">
+                <option value="en">English (Default)</option>
+                <option value="bn">Bengali (বাংলা)</option>
+                <option value="hi">Hindi (हिन्दी)</option>
+              </select>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">
+                Choose the default language that will be loaded when a customer scans the QR code.
+              </p>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Menu Item Create/Edit Modal Dialog -->
+  <div id="menu-modal" class="admin-modal">
+    <div class="modal-backdrop" id="menu-modal-backdrop"></div>
+    <div class="modal-body glass-premium">
+      <div class="modal-header">
+        <h3 class="modal-title" id="menu-modal-title-el">Add Menu Item</h3>
+        <button class="close-btn" id="menu-modal-close-btn">&times;</button>
+      </div>
+
+      <form id="menu-form">
+        <input type="hidden" id="menu-item-id">
+        
+        <div class="form-group">
+          <label for="menu-name">Item Name</label>
+          <input type="text" id="menu-name" class="form-control" placeholder="e.g. Garlic Bread" required>
+        </div>
+
+        <div class="form-group">
+          <label for="menu-category">Category</label>
+          <select id="menu-category" class="form-control" required>
+            <option value="Starters">Starters</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Drinks">Drinks</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="menu-custom-category-group" style="display: none; margin-top: -8px;">
+          <label for="menu-custom-category">Custom Category Name</label>
+          <input type="text" id="menu-custom-category" class="form-control" placeholder="e.g. Desserts, Biryani">
+        </div>
+
+        <div class="form-group">
+          <label for="menu-price">Price (₹)</label>
+          <input type="number" id="menu-price" class="form-control" placeholder="e.g. 180" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label for="menu-description">Description</label>
+          <textarea id="menu-description" class="form-control" placeholder="Brief description of ingredients & size..." style="resize:vertical; min-height:80px;" required></textarea>
+        </div>
+
+        <details style="margin-bottom: 20px; border: 1px solid var(--glass-border); padding: 16px; border-radius: var(--border-radius); background: rgba(255,255,255,0.01);">
+          <summary style="cursor: pointer; color: var(--accent-gold); font-weight: 600; font-size: 0.95rem; outline: none; user-select: none;">Add Translations (Bengali & Hindi)</summary>
+          <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <label for="menu-name-bn" style="display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 500;">Item Name (Bengali)</label>
+              <input type="text" id="menu-name-bn" class="form-control" placeholder="e.g. রসুন রুটি">
+            </div>
+            <div>
+              <label for="menu-description-bn" style="display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 500;">Description (Bengali)</label>
+              <textarea id="menu-description-bn" class="form-control" placeholder="Description in Bengali..." style="resize:vertical; min-height:60px;"></textarea>
+            </div>
+            <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.05); margin: 8px 0;">
+            <div>
+              <label for="menu-name-hi" style="display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 500;">Item Name (Hindi)</label>
+              <input type="text" id="menu-name-hi" class="form-control" placeholder="e.g. गार्लिक ब्रेड">
+            </div>
+            <div>
+              <label for="menu-description-hi" style="display: block; margin-bottom: 6px; font-size: 0.9rem; font-weight: 500;">Description (Hindi)</label>
+              <textarea id="menu-description-hi" class="form-control" placeholder="Description in Hindi..." style="resize:vertical; min-height:60px;"></textarea>
+            </div>
+          </div>
+        </details>
+
+        <div class="form-group">
+          <label for="menu-image">Image URL</label>
+          <input type="url" id="menu-image" class="form-control" placeholder="https://images.unsplash.com/... (optional)">
+        </div>
+
+        <div class="switch-group">
+          <span style="font-weight:500; font-size:0.95rem;">Veg / Vegetarian</span>
+          <label class="switch">
+            <input type="checkbox" id="menu-is-veg">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="switch-group" style="margin-bottom:28px;">
+          <span style="font-weight:500; font-size:0.95rem;">Available in Stock</span>
+          <label class="switch">
+            <input type="checkbox" id="menu-in-stock" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:20px;">
+          <button type="button" class="btn btn-secondary" id="menu-cancel-btn" style="flex-grow:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex-grow:1;">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+  </style>
+
+  <!-- Script Modules -->
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

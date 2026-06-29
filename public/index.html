@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ZZRestaurant - Premium Culinary Art & Seamless Contactless Dining Experience. Scan QR, browse our menu, and order tableside.">
+  <title>ZZRestaurant | Fine Dining & Contactless Ordering</title>
+  
+  <script>
+    // Redirect active table sessions to the menu ordering page automatically
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get("session_id");
+    if (sessionId) {
+      window.location.replace("menu.html?session_id=" + sessionId);
+    }
+  </script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  
+  <style>
+    /* Premium Homepage CSS */
+    .hero-section {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(rgba(11, 12, 16, 0.8), rgba(11, 12, 16, 0.95)), 
+                  url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80') no-repeat center center/cover;
+      padding: 60px 20px;
+    }
+
+    .hero-content {
+      max-width: 800px;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      font-family: var(--font-heading);
+      background: linear-gradient(to right, #ffffff, var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(11, 12, 16, 0.95);
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Section Styles */
+    .section-container {
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: var(--accent-gold);
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold);
+    }
+
+    .feature-icon {
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .feature-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Featured Menu grid */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .featured-card {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .featured-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .featured-details {
+      padding: 24px;
+    }
+
+    /* Footer / Policy links */
+    .footer-section {
+      background: #050608;
+      padding: 60px 40px;
+      border-top: 1px solid var(--glass-border);
+      text-align: center;
+    }
+
+    .policy-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+
+    .policy-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .policy-link:hover {
+      color: var(--accent-gold);
+      text-decoration: underline;
+    }
+
+    /* Modals for Policy pages */
+    .policy-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .policy-modal.open {
+      display: flex;
+    }
+
+    .policy-modal-body {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-gold);
+      border-radius: 20px;
+      padding: 40px;
+      z-index: 2;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .policy-modal-title {
+      font-size: 1.6rem;
+      color: var(--accent-gold);
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 12px;
+    }
+
+    .policy-modal-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .policy-modal-text h3 {
+      font-size: 1.1rem;
+      color: white;
+      margin: 16px 0 8px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.3rem; }
+      .nav-bar { padding: 15px 20px; flex-direction: column; gap: 12px; text-align: center; }
+      .nav-links { gap: 16px; justify-content: center; }
+      .section-container { padding: 50px 20px; }
+      
+      /* Make grids stack vertically on mobile */
+      #about > div {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+      
+      .featured-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation bar -->
+  <header class="nav-bar">
+    <a href="#" class="nav-logo">ZZRestaurant</a>
+    <nav class="nav-links">
+      <a href="#about" class="nav-link">About Us</a>
+      <a href="#features" class="nav-link">Services</a>
+      <a href="#menu-preview" class="nav-link">Featured Items</a>
+      <a href="/admin.html" class="nav-link">Admin login</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-tagline">Fine Dining Resturant</div>
+      <h1 class="hero-title">Culinary Artistry & Seamless Dining</h1>
+      <p class="hero-desc">Welcome to ZZRestaurant, where rich flavors meet modern comfort. We offer a high-end dine-in experience where you can browse, order, and pay right from your table using our secure contactless ordering portal.</p>
+      <div style="display:flex; justify-content:center; gap:16px;">
+        <a href="#menu-preview" class="btn btn-primary">Featured Menu</a>
+        <button onclick="openModal('modal-contact')" class="btn btn-secondary">Contact Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section-container">
+    <div class="section-header">
+      <h2 class="section-title">Our Story</h2>
+      <p class="section-subtitle">Crafting unforgettable taste experiences since 2021.</p>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:40px; align-items:center;">
+      <div>
+        <p style="line-height:1.7; margin-bottom:20px; color:var(--text-secondary);">ZZRestaurant was born out of a passion to redefine luxury dining. We specialize in authentic clay-oven clay roasts, slow-cooked dal recipes, and craft mocktails. Every dish is curated by our executive chefs using farm-fresh, organic local produce.</p>
+        <p style="line-height:1.7; color:var(--text-secondary);">To offer convenience and safety, we introduced our proprietary tableside ordering system. Simply scan the QR code placed on your dining table, select your favorite dishes, add tips for staff, and complete checkout. Your food will be served freshly prepared directly to your table.</p>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80" alt="ZZRestaurant Dining Room" style="width:100%; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="features" class="section-container" style="border-top:1px solid rgba(255,255,255,0.03);">
+    <div class="section-header">
+      <h2 class="section-title">Seamless Tableside Services</h2>
+      <p class="section-subtitle">How our contactless dining system improves your dining experience.</p>
+    </div>
+    <div class="features-grid">
+      <!-- Card 1 -->
+      <div class="feature-card glass">
+        <div class="feature-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Digital QR Menu</h3>
+        <p class="feature-desc">Scan the secure QR code on your table to open the live interactive menu. No need to download any apps or register.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="feature-card glass">
+        <div class="feature-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Instant Ordering</h3>
+        <p class="feature-desc">Send order details instantly to the kitchen. Add custom tips for servers, and order extra items whenever you want.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="feature-card glass">
+        <div class="feature-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Secure Payments</h3>
+        <p class="feature-desc">Checkout safely via UPI, NetBanking or cards using Cashfree gateway checkout, or choose to pay at the counter with cash.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Items Section -->
+  <section id="menu-preview" class="section-container" style="border-top:1px solid rgba(255,255,255,0.03);">
+    <div class="section-header">
+      <h2 class="section-title">Signature Dishes</h2>
+      <p class="section-subtitle">A sneak-peek of our highly recommended culinary delights.</p>
+    </div>
+    <div class="featured-grid">
+      <!-- Dish 1 -->
+      <div class="featured-card glass">
+        <img class="featured-img" src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&auto=format&fit=crop" alt="Paneer Tikka">
+        <div class="featured-details">
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Paneer Tikka</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem; line-height:1.5; margin-bottom:12px;">Clay-oven roasted cottage cheese cubes marinated in rich Indian spices.</p>
+          <span style="font-weight:700; color:var(--accent-gold);">₹280</span>
+        </div>
+      </div>
+      <!-- Dish 2 -->
+      <div class="featured-card glass">
+        <img class="featured-img" src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&auto=format&fit=crop" alt="Butter Chicken">
+        <div class="featured-details">
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Butter Chicken</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem; line-height:1.5; margin-bottom:12px;">Succulent chicken pieces cooked in a rich, buttery, and creamy tomato gravy.</p>
+          <span style="font-weight:700; color:var(--accent-gold);">₹420</span>
+        </div>
+      </div>
+      <!-- Dish 3 -->
+      <div class="featured-card glass">
+        <img class="featured-img" src="https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=500&auto=format&fit=crop" alt="Mango Lassi">
+        <div class="featured-details">
+          <h3 style="font-size:1.2rem; margin-bottom:8px;">Mango Lassi</h3>
+          <p style="color:var(--text-secondary); font-size:0.85rem; line-height:1.5; margin-bottom:12px;">Traditional sweet yogurt drink flavored with fresh mango pulp.</p>
+          <span style="font-weight:700; color:var(--accent-gold);">₹120</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer with merchant policy links -->
+  <footer class="footer-section">
+    <p style="font-size:1.1rem; font-family:var(--font-heading); color:var(--accent-gold);">ZZRestaurant RESTAURANT</p>
+    <p style="font-size:0.85rem; color:var(--text-muted); margin-top:6px;">© 2026 ZZRestaurant Restaurant Services. All Rights Reserved.</p>
+    
+    <!-- Policy links necessary for Payment Gateway verification -->
+    <div class="policy-links">
+      <span class="policy-link" onclick="openModal('modal-contact')">Contact Us</span>
+      <span class="policy-link" onclick="openModal('modal-privacy')">Privacy Policy</span>
+      <span class="policy-link" onclick="openModal('modal-terms')">Terms & Conditions</span>
+      <span class="policy-link" onclick="openModal('modal-refund')">Refund & Cancellation</span>
+      <span class="policy-link" onclick="openModal('modal-shipping')">Shipping & Delivery</span>
+    </div>
+  </footer>
+
+  <!-- MODALS FOR POLICIES -->
+  
+  <!-- Modal: Contact Us -->
+  <div id="modal-contact" class="policy-modal">
+    <div class="modal-backdrop" onclick="closeModal('modal-contact')"></div>
+    <div class="policy-modal-body">
+      <div class="modal-header">
+        <h3 class="policy-modal-title">Contact Us</h3>
+        <button class="close-btn" onclick="closeModal('modal-contact')">&times;</button>
+      </div>
+      <div class="policy-modal-text">
+        <p>If you have any questions, feedback or complaints regarding our services, dishes, or tableside checkout, please reach out to us:</p>
+        <h3>Registered Business Entity Name</h3>
+        <p>ZZRestaurant RESTAURANT SERVICES</p>
+        <h3>Support Email Address</h3>
+        <p>support@ZZRestaurant.com (or rohitkumar2005@gmail.com)</p>
+        <h3>Contact Phone Number</h3>
+        <p>+91 9876543210</p>
+        <h3>Physical Address</h3>
+        <p>ZZRestaurant Restaurant, 4th Floor, Sector 5, Salt Lake, Kolkata, West Bengal - 700091</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Privacy Policy -->
+  <div id="modal-privacy" class="policy-modal">
+    <div class="modal-backdrop" onclick="closeModal('modal-privacy')"></div>
+    <div class="policy-modal-body">
+      <div class="modal-header">
+        <h3 class="policy-modal-title">Privacy Policy</h3>
+        <button class="close-btn" onclick="closeModal('modal-privacy')">&times;</button>
+      </div>
+      <div class="policy-modal-text">
+        <p>At ZZRestaurant Restaurant, we value your privacy. This policy describes how we collect, store, and manage your data when using tableside contactless ordering:</p>
+        <h3>1. Data Collection</h3>
+        <p>We do not require users to create accounts. When ordering, we collect minimum metadata (your table ID, ordering details, billing amounts, and transaction IDs) necessary to process your kitchen order and verify gateway payment status.</p>
+        <h3>2. Payment Security</h3>
+        <p>Your online payments are securely processed by our third-party checkout partner, Cashfree. We do not store or capture any credit card numbers, UPI PINs, or bank account credentials on our servers.</p>
+        <h3>3. Data Retention</h3>
+        <p>Order records are securely kept in our cloud database (Firebase) to facilitate admin preparation queue monitors and resolve counter invoice reviews.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Terms & Conditions -->
+  <div id="modal-terms" class="policy-modal">
+    <div class="modal-backdrop" onclick="closeModal('modal-terms')"></div>
+    <div class="policy-modal-body">
+      <div class="modal-header">
+        <h3 class="policy-modal-title">Terms & Conditions</h3>
+        <button class="close-btn" onclick="closeModal('modal-terms')">&times;</button>
+      </div>
+      <div class="policy-modal-text">
+        <p>By scanning our dining QR codes and placing an order via our tableside web application, you agree to comply with the following Terms and Conditions:</p>
+        <h3>1. Digital Ordering and Verification</h3>
+        <p>Each table features a unique token session link. You are solely responsible for verifying the table details shown on your screen (e.g. Table 5) before finalizing payment checkout. Placing orders under an invalid session is strictly prohibited.</p>
+        <h3>2. Menu Pricing</h3>
+        <p>All prices displayed in our digital menu are in Indian Rupees (INR) and are inclusive of packaging fees. Applicable taxes and tips are computed during checkout.</p>
+        <h3>3. Service Availability</h3>
+        <p>Our ordering system is only operational during active restaurant operating hours (11:00 AM to 11:00 PM).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Refund & Cancellation -->
+  <div id="modal-refund" class="policy-modal">
+    <div class="modal-backdrop" onclick="closeModal('modal-refund')"></div>
+    <div class="policy-modal-body">
+      <div class="modal-header">
+        <h3 class="policy-modal-title">Refund & Cancellation Policy</h3>
+        <button class="close-btn" onclick="closeModal('modal-refund')">&times;</button>
+      </div>
+      <div class="policy-modal-text">
+        <p>We want you to have the best dining experience. Please read our guidelines regarding cancellations and transaction refunds:</p>
+        <h3>1. Order Cancellation</h3>
+        <p>Customers can cancel their orders directly from the tableside tracking screen <strong>until the kitchen changes the status to "Preparing"</strong>. Once our chef begins cooking, cancellation requests cannot be accepted.</p>
+        <h3>2. Refunds for Cancelled Orders</h3>
+        <p>If an order is cancelled successfully before preparation starts and payment was completed online:
+           - The refund is initiated immediately.
+           - The refunded amount will be credited back to your original payment method (bank account/UPI/card) within <strong>5-7 business days</strong> as per standard banking procedures.</p>
+        <h3>3. Failed Transactions</h3>
+        <p>If money was deducted from your account but the order state displays "Failed/Pending" in the database, the amount will be automatically returned to your account by Cashfree within 48-72 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Shipping & Delivery -->
+  <div id="modal-shipping" class="policy-modal">
+    <div class="modal-backdrop" onclick="closeModal('modal-shipping')"></div>
+    <div class="policy-modal-body">
+      <div class="modal-header">
+        <h3 class="policy-modal-title">Shipping & Delivery Policy</h3>
+        <button class="close-btn" onclick="closeModal('modal-shipping')">&times;</button>
+      </div>
+      <div class="policy-modal-text">
+        <p>This policy details how dining orders placed tableside are fulfilled:</p>
+        <h3>1. Shipping Methods</h3>
+        <p>ZZRestaurant operates strictly as a **dine-in physical restaurant**. There are no shipping, courier, or logistical postal delivery methods involved for digital order transactions.</p>
+        <h3>2. Delivery Timelines</h3>
+        <p>All items added to the cart and placed successfully are delivered directly by our waiters **to your specific table inside the restaurant**.
+           - Starters & Drinks: Delivered within <strong>10-15 minutes</strong> from kitchen approval.
+           - Main Course: Served hot within <strong>20-30 minutes</strong> from preparation start.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Controls script -->
+  <script>
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('open');
+    }
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('open');
+    }
+  </script>
+</body>
+</html>

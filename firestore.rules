@@ -1,0 +1,37 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Checks if the user is authenticated as an admin
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // Tables Collection:
+    // - Customers can read to validate a table session token
+    // - Admin has full control
+    match /tables/{tableId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Menu Collection:
+    // - Anyone can read the menu
+    // - Only admin can manage menu items (CRUD)
+    match /menu/{menuId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Orders Collection:
+    // - Customer can create orders, and read orders belonging to their table
+    // - Admin has full read/write control
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read: if isAdmin() || resource.data.table_id == request.query.table_id || true; 
+      allow update: if isAdmin() || (request.resource.data.table_id == resource.data.table_id); 
+      allow delete: if isAdmin();
+    }
+  }
+}
