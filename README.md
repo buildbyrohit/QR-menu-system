@@ -1,9 +1,12 @@
-# Digital Restaurant Ordering & Administration System
+# 🍽️ Digital Restaurant Ordering & Administration System
 
-**🌍 Live Website:** [https://zzrestaurant.netlify.app/](https://zzrestaurant.netlify.app/)  
-**📱 Scan to View Menu:**  <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/58bb995e-3718-401b-82bb-da90e77840d2" />
+> A premium, responsive, and real-time digital restaurant management application. It features an interactive customer-facing menu with multi-language support, a robust admin dashboard for live order tracking, and serverless payment processing.
 
-A premium, responsive, and real-time digital restaurant management application. It features an interactive customer-facing menu with multi-language support, a robust admin dashboard for live order tracking, and serverless payment processing.
+### 🌐 Quick Access
+
+| 🌍 **Live Website** | 📱 **Scan to View Menu** |
+| :---: | :---: |
+| [**Visit Live Demo**](https://zzrestaurant.netlify.app/) <br><br> *(zzrestaurant.netlify.app)* | <img src="https://github.com/user-attachments/assets/58bb995e-3718-401b-82bb-da90e77840d2" width="150" alt="Menu QR Code" /> |
 
 ---
 
